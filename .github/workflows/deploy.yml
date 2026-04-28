@@ -1,0 +1,20 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Build Docker image
+      run: docker build -t autodeploy-hub ./app
+
+    - name: Run tests
+      run: |
+        docker run --rm autodeploy-hub python -c "import app; print('✅ App imported successfully')"
